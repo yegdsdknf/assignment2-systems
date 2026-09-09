@@ -1,0 +1,22 @@
+{
+  "model_size": "small",
+  "mode": "train",
+  "precision": "fp32",
+  "device": "cuda",
+  "batch_size": 4,
+  "context_length": 512,
+  "warmup_steps": 5,
+  "checkpoint_every": 6,
+  "vocab_size": 10000,
+  "parameter_mib": 490.6669921875,
+  "optimizer_state_mib": 981.333984375,
+  "baseline_allocated_mib": 1500.8759765625,
+  "peak_allocated_mib": 3579.36328125,
+  "peak_reserved_mib": 3960.0,
+  "step_peak_delta_mib": 2078.4873046875,
+  "saved_tensor_count": 18,
+  "saved_tensor_mib": 221.6201171875,
+  "unique_saved_storage_mib": 215.6123046875,
+  "loss": 6.900971412658691,
+  "snapshot_path": null
+}
