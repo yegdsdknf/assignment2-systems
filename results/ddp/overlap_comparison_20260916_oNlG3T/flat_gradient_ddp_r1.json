@@ -1,0 +1,32 @@
+{
+  "implementation": "flat_gradient_ddp",
+  "implementation_class": "FlatGradientDDP",
+  "device": "cpu",
+  "backend": "gloo",
+  "dtype": "float32",
+  "torch_version": "2.11.0+cu130",
+  "world_size": 2,
+  "cpu_threads_per_rank": 1,
+  "global_batch_size": 32,
+  "local_batch_size": 16,
+  "warmup_steps": 5,
+  "measured_steps": 20,
+  "step_includes_zero_grad": false,
+  "gradient_tensor_count": 6,
+  "gradient_bytes_per_rank": 428160,
+  "per_rank": [
+    {
+      "rank": 0,
+      "mean_step_ms": 0.8935899999414687,
+      "mean_sync_ms": 0.5852550008057733,
+      "sync_fraction": 0.6549480196109047
+    },
+    {
+      "rank": 1,
+      "mean_step_ms": 0.8912649998819688,
+      "mean_sync_ms": 0.5812150004203431,
+      "sync_fraction": 0.6521236674808436
+    }
+  ],
+  "max_rank_mean_step_ms": 0.8935899999414687
+}

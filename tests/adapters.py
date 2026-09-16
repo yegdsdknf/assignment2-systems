@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 import torch
 
 
@@ -51,9 +53,14 @@ def get_ddp(module: torch.nn.Module) -> torch.nn.Module:
     Returns:
         Instance of a DDP class.
     """
-    # For example: return DDP(module)
-    from cs336_systems.ddp import NaiveDDP
-    return NaiveDDP(module)
+    from cs336_systems.ddp import DDP_IMPLEMENTATIONS
+
+    # 默认保持本轮正在验证的 Flat-gradient 版本。
+    implementation = os.environ.get("CS336_DDP_IMPLEMENTATION", "overlapping_ddp")
+    if implementation not in DDP_IMPLEMENTATIONS:
+        raise ValueError(f"Unknown DDP implementation: {implementation}")
+    print(f"DDP implementation: {implementation}", flush=True)
+    return DDP_IMPLEMENTATIONS[implementation](module)
 
 
 def ddp_on_after_backward(ddp_model: torch.nn.Module, optimizer: torch.optim.Optimizer):
@@ -68,7 +75,6 @@ def ddp_on_after_backward(ddp_model: torch.nn.Module, optimizer: torch.optim.Opt
             Optimizer being used with the DDP-wrapped model.
     """
     # For example: ddp_model.finish_gradient_synchronization()
-    from cs336_systems.ddp import NaiveDDP
     ddp_model.synchronize_gradient()
 
     return 

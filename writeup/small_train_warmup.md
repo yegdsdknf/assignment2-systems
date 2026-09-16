@@ -810,7 +810,7 @@ FP32 下，B 有 19/32 对配置加速，中位数为 1.08×；F+B 则有 31/32 
 4. 反向仍是主要限制：完整 FP32 重计算保留了二次方中间量，并使 BF16 前后向组合不一定获益；FP32 前后向组合的加速比中位数为 1.59×。
 5. 本轮完成的是 FlashAttention 本地性能评估与报告收尾，不因 OOM 强行扩大硬件规模，也不在本节继续修改 kernel。
 
-进度记录：已完成 1A 数据采集与 1B 报告整理；当前小节为 FlashAttention benchmark 收尾。后续经确认再进入本地 CPU/Gloo DDP correctness，暂不启动云端租卡或分布式实验。
+进度记录：已完成 FlashAttention 本地 benchmark、Naive 与 Flat-gradient DDP 正确性验证及 CPU/Gloo 性能对照归档，结果见第二十至二十二节。下一小节为 Overlap DDP；指定双 GPU、XL 模型的正式性能实验待补。
 
 原始结果与实现：
 
@@ -818,3 +818,137 @@ FP32 下，B 有 19/32 对配置加速，中位数为 1.08×；F+B 则有 31/32 
 - [复查 smoke JSON](../results/flash_attention/rtx5060_smoke_recheck.json)
 - [benchmark 脚本](../cs336_systems/flash_attention_benchmark.py)
 - [FlashAttention 实现](../cs336_systems/flash_attention.py)
+
+## 二十、Naive DDP 正确性验证
+
+### 20.1 验证对象与配置
+
+本节对应作业 `naive_ddp` 的正确性验证。测试通过 [adapters](../tests/adapters.py) 调用当前 [NaiveDDP](../cs336_systems/ddp.py)，使用官方 [test_ddp.py](../tests/test_ddp.py) 检查普通模型与共享权重模型的训练一致性。测试入口为 `uv run pytest -v tests/test_ddp.py`。
+
+| 项目 | 配置 |
+| --- | --- |
+| 测试模型 | ToyModel、ToyModelWithTiedWeights |
+| 进程数 | 2，使用 spawn 启动 |
+| 通信后端 | Gloo |
+| 数据 | 官方 fixtures 中的 20 个样本，每个 rank 处理 10 个样本 |
+| 损失与优化器 | MSELoss，SGD，学习率 0.1 |
+| 训练步数 | 每个用例执行 5 次参数更新 |
+| 参考路径 | 单模型处理完整 batch |
+| 数值比较 | 使用官方测试中的 torch.allclose 判定 |
+
+上述配置依据当前测试源码。官方测试的设备选择由 `_setup_process_group` 决定：检测到 CUDA 时使用 CUDA，否则使用 CPU。本次反馈未附运行环境信息，因此不将实际设备、操作系统或 Python/PyTorch 版本记为已确认，也不沿用前文 RTX 5060 实验的环境记录。
+
+### 20.2 测试结果与覆盖范围
+
+根据本次运行反馈，官方两个参数化测试用例均通过：
+
+| 用例 | 结果 | 主要覆盖内容 |
+| --- | --- | --- |
+| test_DistributedDataParallel[ToyModel] | 通过 | 初始参数同步、冻结参数保持不变、多步参数更新与完整 batch 参考路径一致 |
+| test_DistributedDataParallel[ToyModelWithTiedWeights] | 通过 | 含共享权重时的初始参数同步，以及多步参数更新与完整 batch 参考路径一致 |
+
+测试先检查不同 rank 的初始参数同步，再将完整数据均分给两个进程进行训练。每次更新后，rank 0 的 DDP 参数与处理完整 batch 的参考模型参数进行比较；同时检查各 rank 的模型状态一致。每步采用相同的随机种子重排数据，覆盖连续 5 步训练。
+
+结果来源为使用者反馈的“两个测试均通过”；本次报告整理未重新执行测试，也未附原始 pytest 日志或耗时。测试直接比较的是模型状态及更新后的参数，未单独逐项比较同步后的梯度张量，因此本节结论限定在官方用例覆盖的训练一致性范围内。
+
+### 20.3 本阶段结论与后续工作
+
+Naive DDP 已完成官方两个用例的正确性验证，并补齐本阶段报告记录。现有实现可作为后续 DDP 实验的基础正确性基线。
+
+本次测试未测量训练吞吐量、梯度通信耗时或通信与计算的重叠情况，也不构成指定双 GPU、XL 模型配置的实验结果。后续仍需完成 Naive DDP benchmark、Flat-gradient DDP 和 Overlap DDP 的实现或实验，以及相应的报告。原始测试输出与实际运行环境信息尚待归档。
+
+## 二十一、Naive DDP CPU/Gloo Benchmark
+
+### 21.1 实验来源与配置
+
+本节归档使用者提供的 benchmark 标准输出，归档日期为 2026-09-16；未单独记录实际运行时间。本次归档未重新执行实验。原始数值保存在 [naive_ddp_cpu_gloo.json](../results/ddp/naive_ddp_cpu_gloo.json)，对应脚本为 [ddp_benchmark.py](../cs336_systems/ddp_benchmark.py)，运行入口为 `uv run python -m cs336_systems.ddp_benchmark`。
+
+| 项目 | 配置 |
+| --- | --- |
+| 运行环境 | WSL Ubuntu，CPU，Gloo 后端 |
+| PyTorch | 2.11.0+cu130；本次计算使用 CPU |
+| 进程数 / 每进程 CPU 线程数 | 2 / 1 |
+| 模型 | 三层带 bias 的 Linear：128→256→256→32，前两层后接 ReLU |
+| 精度 | FP32 |
+| 损失 / 优化器 | MSELoss（mean）/ SGD，学习率 0.01 |
+| Global / local batch size | 32 / 16 |
+| Warmup / 正式测量 | 5 / 20 步 |
+| 梯度张量数 / 每 rank 逻辑梯度大小 | 6 / 428160 字节 |
+
+模型、优化器和计时设置依据本次归档时读取的脚本；运行统计依据所提供的 JSON。未记录 CPU 型号、Python 版本和逐步计时样本。
+
+### 21.2 计时口径与结果
+
+每个 step 包含 forward、loss、backward、梯度同步及 optimizer step，排除 zero_grad。输入生成和初始化广播位于计时区间外；预热结束后用 barrier 对齐，正式测量循环中不额外插入阶段 barrier。各 rank 的结果汇总也位于计时循环之外。
+
+同步时间覆盖整个 `synchronize_gradient()` 调用，包括逐参数 all-reduce、梯度平均操作及可能的进程等待。因此本节称其为“梯度同步阶段耗时”，不将其全部解释为数据传输时间。同步占比按每 rank 的平均同步时间除以平均 step 时间计算。
+
+| Rank | Mean step (ms) | Mean sync (ms) | Sync fraction |
+| ---: | ---: | ---: | ---: |
+| 0 | 3.056945 | 2.745775 | 89.8209% |
+| 1 | 3.056745 | 2.742865 | 89.7316% |
+
+两个 rank 平均 step 时间中的最大值为 **3.056945 ms**。该指标是先对各 rank 的 20 步求均值，再取最大值，不是每步取最慢 rank 后再求均值。
+
+三层 Linear 共包含 107040 个参数元素，与 6 个梯度张量一致；FP32 下对应 107040 × 4 = 428160 字节。这是每个 rank 的逻辑梯度大小，不等于通信链路上的实际传输字节数。
+
+### 21.3 结果解释与验证边界
+
+本轮两个 rank 的平均 step 时间接近，梯度同步阶段约占 90%。这是小型 CPU 模型在当前 Gloo 双进程配置下的观测值：同步占比取决于通信数据量、调用次数、带宽与延迟、计算量以及进程等待，不能外推到双 GPU、XL 模型配置。相同模型下，增大 batch size 通常增加计算量，但不会改变参数梯度的逻辑总字节数，因此同步占比可能下降；这属于待验证的趋势解释，本轮未进行 batch sweep。
+
+本脚本验证了完整训练与计时、统计流程能够运行；此前官方 DDP 两个用例通过的记录见第二十节。当前 benchmark 没有单独对照参考模型的参数或梯度，运行成功不构成新的数值等价性测试。由于只保存了单次运行的均值，没有逐步样本、标准差或跨运行重复结果，不能据此断言计时稳定性。
+
+### 21.4 当前进度
+
+已完成 Naive DDP 的官方正确性测试、CPU/Gloo benchmark 流程验证和本次结果归档。讲义要求的单节点双 GPU、XL 模型正式 benchmark 仍待补测。下一小节进入 Flat-gradient DDP，先完成实现与正确性验证，再按相同口径进行本地对照，正式多 GPU 性能对照集中安排。
+
+## 二十二、Flat-gradient DDP CPU/Gloo 对照
+
+### 22.1 验证与实验设置
+
+已保留逐参数同步的 NaiveDDP 和使用者实现的 FlatGradientDDP。整理版本入口后，两种实现分别在 WSL 的 CPU/Gloo 路径通过官方 DDP 两个用例，共 4 项通过，覆盖普通模型与共享权重模型。上述测试在此前版本整理时执行；本次确认代码与已验证版本一致后进行计时。
+
+本轮于 2026-09-16 运行，按 Naive、Flat-gradient 的顺序交替执行三轮，每个版本各三次独立运行。沿用第二十一节的 CPU/Gloo、双进程、每进程 1 线程、FP32、三层 Linear、global/local batch 32/16、SGD 配置；每次均执行 5 步 warmup 和 20 步测量。模型种子为 42，各 rank 输入种子为 1234 + rank，两种版本使用相同初始化与数据生成设置。
+
+每次运行显式指定 --implementation，原始 JSON 同时记录 implementation 与 implementation_class。完整 step 排除 zero_grad；同步阶段包含对应版本所需的数据整理、all-reduce、平均、写回及可能的进程等待。Flat-gradient 的拼接和写回开销未移出计时范围。
+
+### 22.2 逐轮数据及统计口径
+
+每次运行先对各 rank 的 20 个 step 求平均，再取两个 rank 平均值的最大值作为该次 step 指标。同步指标同样取两个 rank 平均同步时间的最大值。两项最大值可能来自不同 rank，不将其比值解释为某个 rank 的实际同步占比。
+
+| 轮次 | 实现 | Step 指标 (ms) | Sync 指标 (ms) |
+| ---: | --- | ---: | ---: |
+| 1 | naive_ddp | 3.107580 | 2.786340 |
+| 1 | flat_gradient_ddp | 0.946575 | 0.610590 |
+| 2 | naive_ddp | 3.200805 | 2.886630 |
+| 2 | flat_gradient_ddp | 0.959250 | 0.616835 |
+| 3 | naive_ddp | 3.053380 | 2.731210 |
+| 3 | flat_gradient_ddp | 0.891695 | 0.589055 |
+
+以下均值与样本标准差由每个版本的三个运行级指标计算；标准差不是单次运行内 20 个 step 的标准差。
+
+| 实现 | 三轮 mean step (ms) | 跨运行 sample std (ms) | 三轮 mean sync (ms) |
+| --- | ---: | ---: | ---: |
+| naive_ddp | 3.120588 | 0.074568 | 2.801393 |
+| flat_gradient_ddp | 0.932507 | 0.035908 | 0.605493 |
+
+两种实现平均 step 时间之比为 **3.346×**，Flat-gradient 的平均 step 时间降低约 **70.12%**。这里使用的是均值之比，不是三个逐轮加速比的均值。历史 Naive 数据及此前入口验证的短跑结果未混入本轮统计。
+
+### 22.3 解释与局限
+
+按当前实现，每步梯度同步的 all-reduce 调用由 6 次减少为 1 次，6 个原始参数梯度张量及每 rank 的逻辑梯度大小 428160 字节保持不变。三轮中 Flat-gradient 的完整 step 与同步阶段均更快。结果与减少多次集体通信的固定开销这一解释一致，但没有单独分解数据整理、通信与等待的耗时，不能把收益全部归因于网络传输。
+
+本轮是 CPU/Gloo 小模型对照，不代表双 GPU、XL 模型结果。仅三次独立运行，固定交替顺序且未控制主机并发负载；原始脚本没有保存逐步计时样本，因此不据此建立置信区间或声称普遍加速。正式双 GPU 对照仍待补测。
+
+### 22.4 归档与进度
+
+原始结果目录为 [comparison_20260916_0occay](../results/ddp/comparison_20260916_0occay/)。其中保留六份 JSON，汇总文件 [summary.json](../results/ddp/comparison_20260916_0occay/summary.json) 记录执行顺序、统计定义、结果和本次实现及 benchmark 源码的 SHA-256。
+
+- [naive_ddp_r1.json](../results/ddp/comparison_20260916_0occay/naive_ddp_r1.json)
+- [flat_gradient_ddp_r1.json](../results/ddp/comparison_20260916_0occay/flat_gradient_ddp_r1.json)
+- [naive_ddp_r2.json](../results/ddp/comparison_20260916_0occay/naive_ddp_r2.json)
+- [flat_gradient_ddp_r2.json](../results/ddp/comparison_20260916_0occay/flat_gradient_ddp_r2.json)
+- [naive_ddp_r3.json](../results/ddp/comparison_20260916_0occay/naive_ddp_r3.json)
+- [flat_gradient_ddp_r3.json](../results/ddp/comparison_20260916_0occay/flat_gradient_ddp_r3.json)
+
+已完成 Flat-gradient 的本地正确性验证、三轮 CPU/Gloo 性能对照和结果归档。下一小节为 Overlap DDP；本节不继续修改同步算法。

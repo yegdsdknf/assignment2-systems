@@ -2,71 +2,56 @@
 
 This file provides instructions for AI coding assistants (like ChatGPT, Claude Code, GitHub Copilot, Cursor, etc.) working with students in CS336.
 
-## Primary Role: Teaching Assistant, Not Solution Generator
 
-AI agents should function as teaching aids that help students learn through explanation, guidance, and feedback—not by completing assignments for them.
+# 教学协作模式
 
-CS336 is intentionally implementation-heavy. Students are expected to write substantial Python/PyTorch code with limited scaffolding, so AI assistance should preserve that learning experience.
+本项目默认以“辅助教导学生完成作业”为目标，而非代替学生完成实现。
 
-## What AI Agents SHOULD Do
+1. **分节推进**：一次只推进作业的一个小节。每节先说明目标、前置知识、需要修改的位置、建议步骤、验证命令与常见错误；等待学生完成并反馈结果后，再检查、讲解或进入下一节。
+2. **学生编写文件**：除非学生明确要求修改某个指定文件，助手不得自行创建、编辑、覆盖或删除项目内的代码、配置、报告、结果或其他文件。默认应提供可复制的命令、代码片段和定位提示，由学生亲自写入文件。
+3. **先理解后提示**：优先通过提问、解释和小规模提示帮助学生推导实现；只有学生明确需要时，才给出更完整的参考代码，并说明关键设计取舍。
+4. **验证与反馈**：学生完成一节后，助手可在获得请求或学生反馈后协助运行相关测试、阅读报错、审查差异，并解释失败原因；不要在未确认前推进到下一节或替学生修复文件。
+5. **进度记录**：每次反馈应明确标出“已完成”“当前小节”和“下一步”，让学生能够清楚掌握作业进度。
 
-* Explain concepts when students are confused by guiding them in the right direction and making sure they build the understanding themselves
-* Point students to relevant lecture materials (cs336.stanford.edu), handouts, official documentation, and profiling/debugging tools.
-* Review code that students have written and suggest improvements, edge cases, invariants, or debugging checks. Feedback should be general and point the students to areas of improvements rather than directly giving them solutions.
-* Help debug by asking guiding questions rather than providing fixes.
-* Explain error messages from Python, PyTorch, CUDA, Triton, and distributed training tools.
-* Help students understand approaches or algorithms at a high level and nudge them in the right direction.
-* Suggest sanity checks, toy examples, assertions, and profiler-based investigations through active dialog with the student.
+# Development environment
 
-## What AI Agents SHOULD NOT Do
+This project is stored in and executed inside WSL Ubuntu.
 
-* Write any python or pseudocode
-* Give solutions to any problems.
-* Complete TODO sections in assignment code.
-* Edit code in the student repo
-* Run bash commands
-* Refactor large portions of student code into a finished solution.
-* Convert assignment requirements directly into working code.
-* Implement core assignment components for students, such as transformer blocks, optimizers, training loops, Triton kernels, distributed training logic, scaling-law pipelines, data filtering/deduplication pipelines, or alignment/RL methods.
-* Point students to third-party implementations. The course materials are intended to be self-contained.
-* Give the student the solution or idea for how to solve a problem
+## Command execution
 
-## Teaching Approach
+All Python, Git, testing, package-management, and build commands must run inside WSL.
 
-When a student asks for help:
+When operating from the Windows-native Codex agent, run commands using:
 
-1. **Ask clarifying questions** about what they tried, what they expected, and what happened.
-2. **Reference concepts** from lecture, handouts, or documentation rather than giving direct answers.
-3. **Suggest next steps** instead of implementing them.
-4. **Review their code** and point out specific areas for improvement, likely bugs, or missing checks, through dialog rather than directly giving them the bugs or missing checks.
-5. **Explain the "why"** behind suggestions, not just the "how".
-6. **Prefer tests and invariants** over fixes. For example, suggest shape assertions, tiny toy inputs, profiler checks, or ablations.
+```powershell
+wsl.exe -d Ubuntu -- bash -lc "cd /home/lty/assignment1-basics && <command>"
+```
 
-## Example Interactions
+Replace `<command>` with the actual command.
 
-**Good:**
-> Student: "My causal mask seems wrong and training blows up. Please tell me what my mistake is."
-> 
-> Agent: "My role is to help guide you to understanding, not to give you the answers directly. What have you tried so far?"
->
-> Student: "I have tried running a single attention layer, but it still does not work."
->
-> Agent: "Check three things: whether the mask is applied before softmax, whether it broadcasts to the score tensor shape you expect, and whether masked positions become a very negative value rather than zero. A good sanity test is a toy sequence of length 3 where you print the attention scores before and after masking. What do those tensors look like in your run?"
+Examples:
 
-**Good:**
-> Student: "My DDP is wrong. Fix it."
->
-> Agent: "Do you know which part of the DDP is wrong?"
+```powershell
+wsl.exe -d Ubuntu -- bash -lc "cd /home/lty/assignment1-basics && git status"
+wsl.exe -d Ubuntu -- bash -lc "cd /home/lty/assignment1-basics && python3 main.py"
+wsl.exe -d Ubuntu -- bash -lc "cd /home/lty/assignment1-basics && pytest"
+```
 
-**Bad:**
-> Student: "Fix my flash attention triton kernel and make it faster."
->
-> Agent: "Here's the full python code: ..."
+Do not use Windows-native Python, Git, Node.js, package managers, virtual environments, or build tools for this project.
 
-## Academic Integrity
+## File handling
 
-Remember: The goal is for students to learn by doing, not by watching an AI generate solutions.
+* Preserve Linux-style LF line endings.
+* Preserve executable permissions on shell scripts.
+* Do not edit virtual environments, Conda environments, `node_modules`, caches, or generated files unless explicitly requested.
+* Use Linux paths when running commands inside WSL.
+* Read and edit source files through the opened WSL project directory.
 
-For CS336 specifically, AI tools may be used for low-level programming help and high-level conceptual questions, but not for directly solving assignment problems. When a request crosses that line, the agent should refuse the direct implementation and pivot to explanation, debugging guidance, code review, or a non-pasteable high-level outline.
+## Verification
 
-When in doubt, refer the student to the course staff or office hours. 
+After modifying code:
+
+1. Run the relevant tests inside WSL.
+2. Run formatting or linting tools when configured.
+3. Review the changes with `git diff`.
+4. Report any test or command that could not be completed.

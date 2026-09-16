@@ -1,0 +1,42 @@
+{
+  "experiment": "naive_vs_flat_gradient_cpu_gloo",
+  "date": "2026-09-16",
+  "repetitions_per_implementation": 3,
+  "run_order": [
+    "naive_ddp_r1.json",
+    "flat_gradient_ddp_r1.json",
+    "naive_ddp_r2.json",
+    "flat_gradient_ddp_r2.json",
+    "naive_ddp_r3.json",
+    "flat_gradient_ddp_r3.json"
+  ],
+  "step_metric": "Maximum across ranks of mean step time; then mean and sample standard deviation across three independent runs.",
+  "sync_metric": "Maximum across ranks of mean synchronization time; then mean across three independent runs.",
+  "source_sha256": {
+    "ddp_py": "2ca89a7bd0044b14998d7ed2334476644b61cd125a04431d04db0e67e78af13a",
+    "ddp_benchmark_py": "963dc2b4bd60c3067655a82dbe7a0d8779e45d0a63eb74d0ac19039dead5bd95"
+  },
+  "statistics": {
+    "naive_ddp": {
+      "mean_step_ms": 3.1205882998619927,
+      "sample_std_step_ms": 0.07456838854972851,
+      "min_step_ms": 3.0533799495970015,
+      "max_step_ms": 3.2008049498472246,
+      "mean_sync_ms": 2.8013933000693214
+    },
+    "flat_gradient_ddp": {
+      "mean_step_ms": 0.9325066669892598,
+      "sample_std_step_ms": 0.03590763186289636,
+      "min_step_ms": 0.891695000063919,
+      "max_step_ms": 0.9592500005965121,
+      "mean_sync_ms": 0.6054933334477633
+    }
+  },
+  "ratio_of_mean_step_times": 3.3464514628482913,
+  "limitations": [
+    "CPU/Gloo toy model; not the required two-GPU XL experiment.",
+    "No per-step samples were saved; reported standard deviation is across three run-level aggregates.",
+    "Fixed alternating order, not randomized; concurrent host load was not controlled.",
+    "Synchronization includes packing, all-reduce, averaging, copying back, and possible rank waiting where applicable."
+  ]
+}
