@@ -1,0 +1,57 @@
+{
+  "archived_at_utc": "2026-09-17T01:24:54.387Z",
+  "run_order": [
+    "naive_ddp_r1.json",
+    "flat_gradient_ddp_r1.json",
+    "overlapping_ddp_r1.json",
+    "naive_ddp_r2.json",
+    "flat_gradient_ddp_r2.json",
+    "overlapping_ddp_r2.json",
+    "naive_ddp_r3.json",
+    "flat_gradient_ddp_r3.json",
+    "overlapping_ddp_r3.json"
+  ],
+  "source_sha256": {
+    "cs336_systems/ddp.py": "0bdf73ef7a1d93edbfb2de49c068bf064cb3586a7d80ee14644ffbced4cc6d9e",
+    "cs336_systems/ddp_benchmark.py": "963dc2b4bd60c3067655a82dbe7a0d8779e45d0a63eb74d0ac19039dead5bd95"
+  },
+  "metric_definitions": {
+    "step": "max across ranks of per-rank mean of 20 steps; excludes zero_grad",
+    "std": "sample standard deviation across three independent runs",
+    "sync": "max across ranks of mean time inside synchronize_gradient; for overlap this measures residual waiting and averaging only, excluding launches and communication during backward",
+    "sync_fraction": "post-backward synchronization fraction; NOT total communication fraction for overlap"
+  },
+  "aggregate": [
+    {
+      "implementation": "naive_ddp",
+      "mean_step_ms": 3.0600933165639312,
+      "sample_std_step_ms": 0.05538074507291029,
+      "mean_post_backward_sync_ms": 2.7503699832929365
+    },
+    {
+      "implementation": "flat_gradient_ddp",
+      "mean_step_ms": 0.9057699999781713,
+      "sample_std_step_ms": 0.010830111998998531,
+      "mean_post_backward_sync_ms": 0.5971900001516891
+    },
+    {
+      "implementation": "overlapping_ddp",
+      "mean_step_ms": 2.8125033336361107,
+      "sample_std_step_ms": 0.05648468205194674,
+      "mean_post_backward_sync_ms": 2.249571666675365
+    }
+  ],
+  "correctness": {
+    "implementation": "overlapping_ddp",
+    "result": "2 passed in 4.18s",
+    "source": "preceding turn actual WSL pytest execution",
+    "device": "cpu",
+    "backend": "gloo"
+  },
+  "limitations": [
+    "CPU small model, not multi-GPU XL",
+    "Only 3 repeats per version, fixed order, host load uncontrolled",
+    "No per-step samples or communication timeline",
+    "Benchmark completion is not a numerical equivalence test"
+  ]
+}

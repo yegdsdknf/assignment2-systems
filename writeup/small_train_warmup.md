@@ -810,7 +810,7 @@ FP32 下，B 有 19/32 对配置加速，中位数为 1.08×；F+B 则有 31/32 
 4. 反向仍是主要限制：完整 FP32 重计算保留了二次方中间量，并使 BF16 前后向组合不一定获益；FP32 前后向组合的加速比中位数为 1.59×。
 5. 本轮完成的是 FlashAttention 本地性能评估与报告收尾，不因 OOM 强行扩大硬件规模，也不在本节继续修改 kernel。
 
-进度记录：已完成 FlashAttention 本地 benchmark、Naive 与 Flat-gradient DDP 正确性验证及 CPU/Gloo 性能对照归档，结果见第二十至二十二节。下一小节为 Overlap DDP；指定双 GPU、XL 模型的正式性能实验待补。
+进度记录：已完成 FlashAttention 本地 benchmark，以及 Naive、Flat-gradient、Overlap DDP 的本地正确性验证和 CPU/Gloo 对照归档，结果见第二十至二十三节。指定双 GPU、XL 模型的正式性能实验及 Overlap profiler 时间线待补。
 
 原始结果与实现：
 
@@ -952,3 +952,48 @@ Naive DDP 已完成官方两个用例的正确性验证，并补齐本阶段报�
 - [flat_gradient_ddp_r3.json](../results/ddp/comparison_20260916_0occay/flat_gradient_ddp_r3.json)
 
 已完成 Flat-gradient 的本地正确性验证、三轮 CPU/Gloo 性能对照和结果归档。下一小节为 Overlap DDP；本节不继续修改同步算法。
+
+
+## 二十三、Overlap DDP 正确性与 CPU/Gloo 对照
+
+### 23.1 正确性与实验配置
+
+此前在 WSL 显式选择 CS336_DDP_IMPLEMENTATION=overlapping_ddp，并设置 CUDA_VISIBLE_DEVICES 为空，运行官方 tests/test_ddp.py，结果为 **2 passed in 4.18s**。两个 rank 均打印 overlapping_ddp。普通模型与共享权重模型各执行连续 5 步更新，检查与全局 batch 参考更新一致；测试不证明 GPU 通信重叠或性能收益。
+
+本轮沿用第二十一节的 CPU/Gloo 小模型、两个 rank、每 rank 一个 CPU 线程、FP32、global/local batch 32/16、5 步预热和 20 步正式测量。三种实现按 Naive、Flat-gradient、Overlap 的固定顺序运行三轮，共九次独立运行，全部成功。源代码在实验前后读取一致，本轮未修改实现或 benchmark。归档日期为 2026-09-17；目录中的 20260916 是本轮启动时分配的标识，不是每个文件的精确运行时间。
+
+### 23.2 计时口径
+
+主要指标为完整 step：包含 forward、loss、backward、同步收尾和 optimizer.step，排除 zero_grad、初始化及数据生成。每次先对各 rank 的 20 步取平均，再取 rank 均值的最大值。以下标准差是三个独立运行指标的样本标准差。
+
+**mean_sync_ms 始终只计 synchronize_gradient() 调用。对于 Overlap，它是反向结束后的剩余通信等待和平均梯度时间，不包含 backward 中的 hook、异步通信发起及已发生的通信。sync_fraction 因此不能解释为 Overlap 的总通信占比，也不能据此算出隐藏了多少通信。** Naive 和 Flat-gradient 的该区间则包含其全部梯度同步阶段工作。同步指标亦取 rank 均值的最大值，可能与 step 最大值来自不同 rank。
+
+### 23.3 本轮结果
+
+| 轮次 | 实现 | Step 指标 (ms) | 反向后同步区间 (ms) |
+| ---: | --- | ---: | ---: |
+| 1 | naive_ddp | 3.050700 | 2.751460 |
+| 1 | flat_gradient_ddp | 0.893590 | 0.585255 |
+| 1 | overlapping_ddp | 2.763405 | 2.195500 |
+| 2 | naive_ddp | 3.119570 | 2.796270 |
+| 2 | flat_gradient_ddp | 0.909405 | 0.603860 |
+| 2 | overlapping_ddp | 2.799870 | 2.230280 |
+| 3 | naive_ddp | 3.010010 | 2.703380 |
+| 3 | flat_gradient_ddp | 0.914315 | 0.602455 |
+| 3 | overlapping_ddp | 2.874235 | 2.322935 |
+
+| 实现 | 三轮 mean step (ms) | 跨运行 sample std (ms) | 三轮反向后同步均值 (ms) |
+| --- | ---: | ---: | ---: |
+| naive_ddp | 3.060093 | 0.055381 | 2.750370 |
+| flat_gradient_ddp | 0.905770 | 0.010830 | 0.597190 |
+| overlapping_ddp | 2.812503 | 0.056485 | 2.249572 |
+
+本轮 Overlap 相对 Naive 的平均 step 时间降低约 8.09%；Flat-gradient 的完整 step 最短。按源码，每步梯度 all-reduce 调用数分别为 6、1、6，逻辑梯度大小均为每 rank 428160 字节。这些调用数来自代码分析，未通过 profiler 计数。Overlap 仍进行逐参数通信；调用开销、hook 开销、计算量及等待都可能影响收益，但本轮没有时间线或分项实验，不能将差异唯一归因于其中某项。
+
+仅三轮固定顺序实验，未控制主机并发负载，也没有逐步样本，结论仅适用于本轮 CPU/Gloo 小模型。未混入第二十一、二十二节历史数据。GPU/NCCL、XL 模型下的性能排名及实际重叠程度仍需正式实验。
+
+### 23.4 归档与后续
+
+九份原始 JSON 和 [summary.json](../results/ddp/overlap_comparison_20260916_oNlG3T/summary.json) 位于 [本轮结果目录](../results/ddp/overlap_comparison_20260916_oNlG3T/)。汇总保留执行顺序、源码 SHA-256、统计口径及限制；同时保存本轮 ddp.py 与 ddp_benchmark.py 的只读用途快照，供后续核对版本。
+
+已完成 Overlap DDP 官方 CPU 正确性验证、三种实现本地对照及报告归档。正式双 GPU/XL benchmark 和 profiler 通信重叠时间线待补；本轮不推进新的实现小节。

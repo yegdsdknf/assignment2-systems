@@ -1,0 +1,32 @@
+{
+  "implementation": "naive_ddp",
+  "implementation_class": "NaiveDDP",
+  "device": "cpu",
+  "backend": "gloo",
+  "dtype": "float32",
+  "torch_version": "2.11.0+cu130",
+  "world_size": 2,
+  "cpu_threads_per_rank": 1,
+  "global_batch_size": 32,
+  "local_batch_size": 16,
+  "warmup_steps": 5,
+  "measured_steps": 20,
+  "step_includes_zero_grad": false,
+  "gradient_tensor_count": 6,
+  "gradient_bytes_per_rank": 428160,
+  "per_rank": [
+    {
+      "rank": 0,
+      "mean_step_ms": 3.0100099499804855,
+      "mean_sync_ms": 2.7033799500259192,
+      "sync_fraction": 0.8981299048674061
+    },
+    {
+      "rank": 1,
+      "mean_step_ms": 3.005804950021229,
+      "mean_sync_ms": 2.6920799500658177,
+      "sync_fraction": 0.8956269601082413
+    }
+  ],
+  "max_rank_mean_step_ms": 3.0100099499804855
+}
