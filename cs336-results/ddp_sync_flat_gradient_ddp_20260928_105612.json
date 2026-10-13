@@ -1,0 +1,29 @@
+{
+  "implementation": "flat_gradient_ddp",
+  "device": "cuda",
+  "backend": "nccl",
+  "model_size": "xl",
+  "precision": "bf16",
+  "world_size": 2,
+  "global_batch_size": 4,
+  "context_length": 512,
+  "warmup_steps": 5,
+  "measurement_steps": 20,
+  "sync_boundary": "after_backward_to_after_synchronize_gradient",
+  "per_rank": [
+    {
+      "rank": 0,
+      "mean_step_ms": 1505.2745496941498,
+      "mean_sync_ms": 949.1921893000836,
+      "std_sync_ms": 16.0626537024633,
+      "sync_fraction": 0.6305774514642168
+    },
+    {
+      "rank": 1,
+      "mean_step_ms": 1505.4355725063942,
+      "mean_sync_ms": 949.3062372552231,
+      "std_sync_ms": 16.39176156573955,
+      "sync_fraction": 0.6305857617504856
+    }
+  ]
+}
