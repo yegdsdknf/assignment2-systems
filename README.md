@@ -63,3 +63,15 @@ To submit, run `./test_and_make_submission.sh` . This script will install your
 code's dependencies, run tests, and create a gzipped tarball with the output. We
 should be able to unzip your submitted tarball and run
 `./test_and_make_submission.sh` to verify your test results.
+
+## 本仓库实现与实验记录
+
+- [提交与实验记录约定](CONTRIBUTING.md)：提交拆分、版本追踪与大型采集文件归档。
+
+- `cs336_systems/`：benchmark、FlashAttention、DDP、优化器状态分片及 FSDP 实现。
+- `tests/`：测试和适配器。
+- [实验结果索引](results/README.md)：按运行环境与实验类型查找数据。
+- [AutoDL 实验归档](results/autodl/20260928/README.md)：原始 JSON、Nsight 记录、显存快照与配套脚本。
+- `writeup/`：书面分析；最终提交仍需按 handout 完成全部题目并生成 `writeup.pdf`。
+
+请使用 Linux 环境运行 GPU/分布式实验；复现实验时以相应 JSON 的配置和采集提交为准。

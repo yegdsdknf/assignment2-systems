@@ -1,0 +1,20 @@
+{
+  "status": "success",
+  "model_size": "large",
+  "mode": "forward_backward",
+  "device": "cuda",
+  "batch_size": 4,
+  "context_length": 512,
+  "vocab_size": 10000,
+  "warmup_steps": 5,
+  "measurement_steps": 10,
+  "parameter_count": 969411840,
+  "mean_ms": 175.93613330391236,
+  "std_ms": 1.897700813359929,
+  "peak_allocated_mib": 17038.3798828125,
+  "peak_reserved_mib": 17596.0,
+  "oom_stage": null,
+  "error": null,
+  "precision": "bf16",
+  "compiled": false
+}

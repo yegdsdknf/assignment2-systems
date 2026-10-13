@@ -1,0 +1,316 @@
+Generating SQLite file /root/autodl-tmp/cs336-results/fsdp_xl_nsys.sqlite from /root/autodl-tmp/cs336-results/fsdp_xl_nsys.nsys-rep
+Processing [/root/autodl-tmp/cs336-results/fsdp_xl_nsys.sqlite] with [/opt/nvidia/nsight-compute/2025.3.1/host/target-linux-x64/reports/nvtx_sum.py]... 
+
+ ** NVTX Range Summary (nvtx_sum):
+
+ Time (%)  Total Time (ns)  Instances    Avg (ns)      Med (ns)     Min (ns)    Max (ns)   StdDev (ns)   Style                        Range                      
+ --------  ---------------  ---------  ------------  ------------  ----------  ----------  -----------  -------  ------------------------------------------------
+     26.9       4006364611          4  1001591152.8  1002884106.0   857860821  1142735578  162991368.0  PushPop  :backward_and_gradient_sync                     
+     26.7       3976241363          2  1988120681.5  1988120681.5  1987108929  1989132434    1430834.1  PushPop  :step/0                                         
+     17.2       2563386060          2  1281693030.0  1281693030.0  1281658163  1281727897      49309.4  PushPop  :step/1                                         
+     12.0       1780954730          4   445238682.5   446119698.5   165114103   723601230  320364933.4  PushPop  :forward                                        
+      5.0        744719100          2   372359550.0   372359550.0   372179103   372539997     255190.6  PushPop  NCCL:ncclCommInitRankConfig                     
+      4.3        644168209          4   161042052.3   161055754.0    95268787   226787914   75892079.2  PushPop  :optimizer_step                                 
+      2.3        338192247        582      581086.3       11582.0       10872   295508898   12331950.2  PushPop  NCCL:ncclBroadcast                              
+      1.9        276102189          4    69025547.3    68806667.5      327124   138161730   79300652.8  PushPop  :layer_compute/module.layers.0.attn.q_proj      
+      1.7        251554728          2   125777364.0   125777364.0   123076766   128477962    3819222.3  PushPop  NCCL:ncclCommDestroy                            
+      0.3         46798090       1816       25769.9       23922.5       15128     1067414      25304.4  PushPop  NCCL:ncclAllGather                              
+      0.1         21287740        904       23548.4       22264.0       16940       72752       4637.4  PushPop  NCCL:ncclReduceScatter                          
+      0.0          6113576          4     1528394.0     1086948.0      184614     3755066    1708952.2  PushPop  :layer_compute/module.token_embeddings          
+      0.0          5411848        260       20814.8       20353.5       16512       36848       2797.9  PushPop  NCCL:ncclAllReduce                              
+      0.0          3040259          4      760064.8      332425.5      157559     2217849     985285.9  PushPop  :layer_compute/module.layers.28.attn.q_proj     
+      0.0          2402888          4      600722.0      175530.0      165848     1885980     856851.4  PushPop  :layer_compute/module.layers.31.ffn.w2          
+      0.0          1996718          4      499179.5      225579.0      157489     1388071     595917.9  PushPop  :layer_compute/module.layers.29.attn.output_proj
+      0.0          1822989          4      455747.3      454557.5      164759      749115     334776.6  PushPop  :layer_compute/module.layers.27.ffn.w1          
+      0.0          1801438          4      450359.5      442939.0      172438      743122     318748.2  PushPop  :layer_compute/module.layers.29.ffn.w1          
+      0.0          1737186          4      434296.5      427886.5      140199      741214     333424.3  PushPop  :layer_compute/module.layers.20.attn.v_proj     
+      0.0          1708289          4      427072.3      409791.0      160081      728626     301081.1  PushPop  :layer_compute/module.layers.20.ffn.w1          
+      0.0          1707628          4      426907.0      425087.0      165134      692320     297706.3  PushPop  :layer_compute/module.layers.21.ffn.w1          
+      0.0          1705026          4      426256.5      407298.0      164375      726055     303133.0  PushPop  :layer_compute/module.layers.30.ffn.w1          
+      0.0          1694315          4      423578.8      406777.0      171221      709540     290623.0  PushPop  :layer_compute/module.layers.23.ffn.w1          
+      0.0          1689393          4      422348.3      401588.0      156858      729359     301900.0  PushPop  :layer_compute/module.layers.31.ffn.w1          
+      0.0          1688267          4      422066.8      409576.5      142470      726644     319930.4  PushPop  :layer_compute/module.layers.30.attn.v_proj     
+      0.0          1685429          4      421357.3      415426.0      175192      679385     282154.0  PushPop  :layer_compute/module.layers.26.ffn.w1          
+      0.0          1682470          4      420617.5      416635.5      144677      704522     314907.2  PushPop  :layer_compute/module.layers.29.attn.v_proj     
+      0.0          1674555          4      418638.8      418991.5      163245      673327     291379.0  PushPop  :layer_compute/module.layers.24.ffn.w1          
+      0.0          1667638          4      416909.5      406954.5      148496      705233     309409.5  PushPop  :layer_compute/module.layers.19.attn.v_proj     
+      0.0          1660025          4      415006.3      401249.5      144138      713388     294359.3  PushPop  :layer_compute/module.layers.23.attn.v_proj     
+      0.0          1653845          4      413461.3      394575.0      152363      712332     298810.8  PushPop  :layer_compute/module.layers.31.attn.v_proj     
+      0.0          1653586          4      413396.5      407436.5      172854      665859     276762.9  PushPop  :layer_compute/module.layers.22.ffn.w1          
+      0.0          1652913          4      413228.3      409059.5      156028      678766     293644.3  PushPop  :layer_compute/module.layers.19.ffn.w1          
+      0.0          1645566          4      411391.5      401360.0      163230      679616     284978.4  PushPop  :layer_compute/module.layers.28.ffn.w1          
+      0.0          1644322          4      411080.5      400674.5      170052      672921     277502.9  PushPop  :layer_compute/module.layers.25.ffn.w1          
+      0.0          1643269          4      410817.3      411574.0      145748      674373     290968.2  PushPop  :layer_compute/module.layers.24.attn.v_proj     
+      0.0          1642752          4      410688.0      408223.5      140577      685728     311387.8  PushPop  :layer_compute/module.layers.22.attn.v_proj     
+      0.0          1642595          4      410648.8      389060.0      158302      706173     290457.0  PushPop  :layer_compute/module.layers.28.attn.v_proj     
+      0.0          1635346          4      408836.5      378318.0      149623      729087     299304.0  PushPop  :layer_compute/module.layers.25.attn.v_proj     
+      0.0          1634111          4      408527.8      406587.5      142731      678205     304231.4  PushPop  :layer_compute/module.layers.21.attn.v_proj     
+      0.0          1617270          4      404317.5      377757.5      142366      719389     296985.4  PushPop  :layer_compute/module.layers.26.attn.v_proj     
+      0.0          1592871          4      398217.8      397560.0      157029      640722     277474.7  PushPop  :layer_compute/module.layers.31.ffn.w3          
+      0.0          1577751          4      394437.8      166858.0      108671     1135364     496433.0  PushPop  :layer_compute/module.layers.11.ffn.w3          
+      0.0          1573615          4      393403.8      377138.0      153740      665599     276020.4  PushPop  :layer_compute/module.layers.27.attn.v_proj     
+      0.0          1542791          4      385697.8      375258.0      109045      683230     317554.8  PushPop  :layer_compute/module.layers.4.ffn.w3           
+      0.0          1506482          4      376620.5      375130.0       63672      692550     356456.1  PushPop  CCCL:cub::DeviceRadixSort                       
+      0.0          1415959          4      353989.8      340675.0      167619      566990     214722.2  PushPop  :layer_compute/module.layers.30.attn.q_proj     
+      0.0          1397794          4      349448.5      347675.5      164525      537918     213151.0  PushPop  :layer_compute/module.layers.27.attn.q_proj     
+      0.0          1380030          4      345007.5      343697.5      175917      516718     195181.0  PushPop  :layer_compute/module.layers.18.ffn.w1          
+      0.0          1356389          4      339097.3      332912.5      150325      540239     209999.8  PushPop  :layer_compute/module.layers.25.attn.k_proj     
+      0.0          1309522          4      327380.5      322025.0      156114      509358     196725.5  PushPop  :layer_compute/module.layers.24.attn.q_proj     
+      0.0          1306020          4      326505.0      315250.0      152973      522547     198513.5  PushPop  :layer_compute/module.layers.30.attn.k_proj     
+      0.0          1300632          4      325158.0      175511.5      120366      829243     339712.6  PushPop  :layer_compute/module.layers.9.ffn.w1           
+      0.0          1299008          4      324752.0      312041.5      147586      527339     196860.6  PushPop  :layer_compute/module.layers.29.attn.k_proj     
+      0.0          1295145          4      323786.3      323614.0      144874      503043     202500.4  PushPop  :layer_compute/module.layers.26.attn.k_proj     
+      0.0          1284738          4      321184.5      320929.5      162136      480743     183304.3  PushPop  :layer_compute/module.layers.26.attn.q_proj     
+      0.0          1270905          4      317726.3      318193.5      163446      471072     176694.6  PushPop  :layer_compute/module.layers.29.attn.q_proj     
+      0.0          1257726          4      314431.5      303575.0      143542      507034     197600.6  PushPop  :layer_compute/module.layers.28.attn.k_proj     
+      0.0          1257200          4      314300.0      315374.0      158934      467518     173329.2  PushPop  :layer_compute/module.layers.23.attn.q_proj     
+      0.0          1250970          4      312742.5      311196.5      167761      460816     162073.0  PushPop  :layer_compute/module.layers.20.attn.q_proj     
+      0.0          1246734          4      311683.5      309812.0      159516      467594     172518.4  PushPop  :layer_compute/module.layers.19.attn.q_proj     
+      0.0          1244521          4      311130.3      311527.0      143355      478112     181805.6  PushPop  :layer_compute/module.layers.27.attn.k_proj     
+      0.0          1242042          4      310510.5      309421.5      161508      461691     171869.4  PushPop  :layer_compute/module.layers.25.attn.q_proj     
+      0.0          1234790          4      308697.5      308329.0      163234      454898     166073.3  PushPop  :layer_compute/module.layers.21.attn.q_proj     
+      0.0          1231363          4      307840.8      295014.0      156897      484438     173475.1  PushPop  :layer_compute/module.layers.24.attn.k_proj     
+      0.0          1224403          4      306100.8      295647.5      149247      483861     176134.0  PushPop  :layer_compute/module.layers.23.attn.k_proj     
+      0.0          1223490          4      305872.5      304573.5      162756      451587     164222.4  PushPop  :layer_compute/module.layers.31.attn.q_proj     
+      0.0          1219640          4      304910.0      305761.0      162640      445478     161823.2  PushPop  :layer_compute/module.layers.22.attn.q_proj     
+      0.0          1217934          4      304483.5      303640.5      150422      460231     172537.1  PushPop  :layer_compute/module.layers.21.attn.k_proj     
+      0.0          1182531          4      295632.8      291174.5      150125      450057     164125.8  PushPop  :layer_compute/module.layers.19.attn.k_proj     
+      0.0          1157525          4      289381.3      287156.5      149923      433289     159441.6  PushPop  :layer_compute/module.layers.22.attn.k_proj     
+      0.0          1148312          4      287078.0      280941.5      143464      442965     161795.7  PushPop  :layer_compute/module.layers.20.attn.k_proj     
+      0.0          1134814          4      283703.5      284463.0      146394      419494     156453.6  PushPop  :layer_compute/module.layers.31.attn.k_proj     
+      0.0          1050808          4      262702.0      253990.0      228550      314278      36742.6  PushPop  :layer_compute/module.layers.0.attn.k_proj      
+      0.0          1042879          4      260719.8      243115.5      175097      381551     101481.8  PushPop  :layer_compute/module.layers.23.ffn.w2          
+      0.0          1037096          4      259274.0      255692.5      152288      373423     116310.9  PushPop  :layer_compute/module.layers.15.attn.output_proj
+      0.0          1006512          4      251628.0      255063.0      233199      263187      12993.8  PushPop  :layer_compute/module.layers.0.attn.output_proj 
+      0.0           979271          4      244817.8      244015.5      181497      309743      71606.2  PushPop  :layer_compute/module.layers.26.ffn.w3          
+      0.0           973778          4      243444.5      238451.5      165874      331001      86578.2  PushPop  :layer_compute/module.layers.29.ffn.w3          
+      0.0           968184          4      242046.0      239494.0      167714      321482      84929.1  PushPop  :layer_compute/module.layers.30.ffn.w3          
+      0.0           966338          4      241584.5      242617.5      176295      304808      69036.5  PushPop  :layer_compute/module.layers.27.ffn.w2          
+      0.0           964218          4      241054.5      242074.5      179354      300715      68587.0  PushPop  :layer_compute/module.layers.28.ffn.w2          
+      0.0           964077          4      241019.3      239782.0      174652      309861      71743.8  PushPop  :layer_compute/module.layers.22.ffn.w3          
+      0.0           961756          4      240439.0      236905.0      164100      323846      87178.2  PushPop  :layer_compute/module.layers.28.ffn.w3          
+      0.0           960523          4      240130.8      239826.0      170270      310601      76775.7  PushPop  :layer_compute/module.layers.29.ffn.w2          
+      0.0           956071          4      239017.8      238352.0      168040      311327      79490.9  PushPop  :layer_compute/module.layers.27.ffn.w3          
+      0.0           953732          4      238433.0      239212.5      173170      302137      70643.7  PushPop  :layer_compute/module.layers.25.ffn.w2          
+      0.0           951409          4      237852.3      236737.0      175805      302130      68890.8  PushPop  :layer_compute/module.layers.30.ffn.w2          
+      0.0           946122          4      236530.5      233805.0      172572      305940      66038.4  PushPop  :layer_compute/module.layers.24.ffn.w2          
+      0.0           945110          4      236277.5      235245.5      169264      305355      76027.3  PushPop  :layer_compute/module.layers.23.ffn.w3          
+      0.0           932156          4      233039.0      235557.0      162031      299011      72437.4  PushPop  :layer_compute/module.layers.21.ffn.w3          
+      0.0           931820          4      232955.0      227625.5      169606      306963      68196.8  PushPop  :layer_compute/module.layers.22.ffn.w2          
+      0.0           931739          4      232934.8      230206.5      175695      295631      63064.4  PushPop  :layer_compute/module.layers.20.ffn.w2          
+      0.0           931389          4      232847.3      231341.5      183274      285432      56331.9  PushPop  :layer_compute/module.layers.19.ffn.w2          
+      0.0           930945          4      232736.3      233300.0      176498      287847      63405.8  PushPop  :layer_compute/module.layers.18.ffn.w2          
+      0.0           928780          4      232195.0      232187.0      175431      288975      61042.1  PushPop  :layer_compute/module.layers.21.ffn.w2          
+      0.0           928026          4      232006.5      232343.0      164242      299098      75610.7  PushPop  :layer_compute/module.layers.25.ffn.w3          
+      0.0           926621          4      231655.3      232736.5      156568      304580      79776.9  PushPop  :layer_compute/module.layers.20.ffn.w3          
+      0.0           923250          4      230812.5      229988.0      164936      298338      74855.6  PushPop  :layer_compute/module.layers.31.attn.output_proj
+      0.0           922430          4      230607.5      228106.0      164233      301985      72456.7  PushPop  :layer_compute/module.layers.19.ffn.w3          
+      0.0           921213          4      230303.3      226187.5      157258      311580      78892.3  PushPop  :layer_compute/module.layers.28.attn.output_proj
+      0.0           920583          4      230145.8      229828.0      171407      289520      67310.0  PushPop  :layer_compute/module.layers.26.ffn.w2          
+      0.0           917895          4      229473.8      228665.0      162796      297769      76055.3  PushPop  :layer_compute/module.layers.24.ffn.w3          
+      0.0           907720          4      226930.0      224936.0      156182      301666      77325.3  PushPop  :layer_compute/module.layers.26.attn.output_proj
+      0.0           904976          4      226244.0      224601.0      155566      300208      79544.8  PushPop  :layer_compute/module.layers.20.attn.output_proj
+      0.0           904678          4      226169.5      225284.0      158865      295245      77033.2  PushPop  :layer_compute/module.layers.23.attn.output_proj
+      0.0           902812          4      225703.0      216603.5      214272      255333      19813.7  PushPop  :layer_compute/module.layers.0.ffn.w3           
+      0.0           900441          4      225110.3      222340.5      165838      289922      68020.6  PushPop  :layer_compute/module.layers.18.ffn.w3          
+      0.0           898155          4      224538.8      226099.5      152358      293598      74808.7  PushPop  :layer_compute/module.layers.27.attn.output_proj
+      0.0           895210          4      223802.5      221583.0      152821      299223      78976.9  PushPop  :layer_compute/module.layers.18.attn.output_proj
+      0.0           894164          4      223541.0      222530.0      156030      293074      76581.2  PushPop  :layer_compute/module.layers.25.attn.output_proj
+      0.0           892767          4      223191.8      222266.0      156676      291559      75856.7  PushPop  :layer_compute/module.layers.24.attn.output_proj
+      0.0           891899          4      222974.8      221607.0      151702      296983      78257.6  PushPop  :layer_compute/module.layers.30.attn.output_proj
+      0.0           891713          4      222928.3      222315.0      154326      292757      76378.3  PushPop  :layer_compute/module.layers.22.attn.output_proj
+      0.0           888198          4      222049.5      219817.0      157420      291144      73555.0  PushPop  :layer_compute/module.layers.19.attn.output_proj
+      0.0           887256          4      221814.0      206555.0      174736      299410      56755.6  PushPop  :layer_compute/module.layers.0.ffn.w1           
+      0.0           884450          4      221112.5      222271.5      151725      288182      75910.7  PushPop  :layer_compute/module.layers.21.attn.output_proj
+      0.0           883256          4      220814.0      217521.0      164660      283554      63893.6  PushPop  :layer_compute/module.layers.1.attn.output_proj 
+      0.0           854767          4      213691.8      211176.0      147735      284680      75031.1  PushPop  :layer_compute/module.layers.2.attn.output_proj 
+      0.0           847424          4      211856.0      216033.5      172271      243086      29631.2  PushPop  :layer_compute/module.layers.17.attn.q_proj     
+      0.0           843516          4      210879.0      200453.0      139817      302793      79990.0  PushPop  :layer_compute/module.layers.3.attn.output_proj 
+      0.0           841154          4      210288.5      206407.5      152999      275340      65084.9  PushPop  :layer_compute/module.layers.14.attn.output_proj
+      0.0           831143          4      207785.8      203219.0      143767      280938      72003.9  PushPop  :layer_compute/module.layers.12.attn.output_proj
+      0.0           828487          4      207121.8      202888.5      140074      282636      75724.0  PushPop  :layer_compute/module.layers.9.attn.output_proj 
+      0.0           827694          4      206923.5      204793.0      157638      260470      56984.3  PushPop  :layer_compute/module.layers.17.attn.output_proj
+      0.0           824452          4      206113.0      204315.0      170332      245490      36633.2  PushPop  :layer_compute/module.layers.14.ffn.w1          
+      0.0           823173          4      205793.3      203782.5      155080      260528      58316.3  PushPop  :layer_compute/module.layers.16.attn.output_proj
+      0.0           819252          4      204813.0      203244.5      148979      263784      61943.1  PushPop  :layer_compute/module.layers.11.attn.output_proj
+      0.0           817643          4      204410.8      201225.5      162550      252642      46399.2  PushPop  :layer_compute/module.layers.15.ffn.w1          
+      0.0           808557          4      202139.3      201175.0      143746      262461      66600.5  PushPop  :layer_compute/module.layers.5.attn.output_proj 
+      0.0           806691          4      201672.8      196645.5      163243      250157      44819.8  PushPop  :layer_compute/module.layers.15.attn.q_proj     
+      0.0           802630          4      200657.5      202647.0      133634      263702      69195.0  PushPop  :layer_compute/module.layers.13.attn.output_proj
+      0.0           802045          4      200511.3      201577.5      136168      262722      69220.8  PushPop  :layer_compute/module.layers.7.attn.output_proj 
+      0.0           801373          4      200343.3      195261.5      166885      243965      36758.5  PushPop  :layer_compute/module.layers.0.ffn.w2           
+      0.0           799792          4      199948.0      194805.0      148260      261922      59496.9  PushPop  :layer_compute/module.layers.4.attn.output_proj 
+      0.0           798715          4      199678.8      198245.5      136067      266157      70110.1  PushPop  :layer_compute/module.layers.10.attn.output_proj
+      0.0           797649          4      199412.3      197883.5      142406      259476      62421.3  PushPop  :layer_compute/module.layers.8.attn.output_proj 
+      0.0           797639          4      199409.8      191235.5      177260      237908      27820.6  PushPop  :layer_compute/module.layers.15.ffn.w2          
+      0.0           797378          4      199344.5      195482.5      166347      240066      36771.0  PushPop  :layer_compute/module.layers.17.ffn.w1          
+      0.0           796997          4      199249.3      199474.0      161796      236253      41288.7  PushPop  :layer_compute/module.layers.16.attn.q_proj     
+      0.0           792290          4      198072.5      193202.5      140594      265291      65902.2  PushPop  :layer_compute/module.layers.6.attn.output_proj 
+      0.0           787238          4      196809.5      195349.5      162479      234060      39476.1  PushPop  :layer_compute/module.layers.16.ffn.w1          
+      0.0           783236          4      195809.0      185972.0      158198      253094      45221.3  PushPop  :layer_compute/module.layers.18.attn.q_proj     
+      0.0           782106          4      195526.5      193758.5      107344      287245      98738.6  PushPop  :layer_compute/module.layers.4.ffn.w2           
+      0.0           780753          4      195188.3      191896.5      178424      218536      19925.5  PushPop  :layer_compute/module.layers.17.ffn.w2          
+      0.0           776971          4      194242.8      192349.5      176197      216075      19369.7  PushPop  :layer_compute/module.layers.13.ffn.w2          
+      0.0           776888          4      194222.0      195061.0      172098      214668      23538.5  PushPop  :layer_compute/module.layers.16.ffn.w2          
+      0.0           776808          4      194202.0      190209.0      167477      228913      28711.2  PushPop  :layer_compute/module.layers.16.ffn.w3          
+      0.0           774849          4      193712.3      183736.5      127445      279931      74690.5  PushPop  :layer_compute/module.layers.1.ffn.w1           
+      0.0           774431          4      193607.8      189171.0      176053      220036      19823.4  PushPop  :layer_compute/module.layers.14.ffn.w2          
+      0.0           771239          4      192809.8      185784.5      160204      239466      37639.0  PushPop  :layer_compute/module.layers.14.ffn.w3          
+      0.0           769096          4      192274.0      190309.5      169954      218523      24252.4  PushPop  :layer_compute/module.layers.15.ffn.w3          
+      0.0           765887          4      191471.8      178284.5      125472      283846      75930.7  PushPop  :layer_compute/module.layers.0.attn.v_proj      
+      0.0           762072          4      190518.0      183570.0      136982      257950      62488.8  PushPop  :layer_compute/module.layers.11.ffn.w1          
+      0.0           762057          4      190514.3      185155.5      160198      231548      30701.5  PushPop  :layer_compute/module.layers.17.ffn.w3          
+      0.0           755021          4      188755.3      183215.0      136418      252173      59491.9  PushPop  :layer_compute/module.layers.1.attn.q_proj      
+      0.0           743355          4      185838.8      183338.5      125505      251173      63721.1  PushPop  :layer_compute/module.layers.3.ffn.w1           
+      0.0           740628          4      185157.0      185093.5      127254      243187      63389.2  PushPop  :layer_compute/module.layers.2.attn.q_proj      
+      0.0           735657          4      183914.3      183229.5      131532      237666      58080.2  PushPop  :layer_compute/module.layers.14.attn.q_proj     
+      0.0           731700          4      182925.0      173544.5      126308      258303      64309.7  PushPop  :layer_compute/module.layers.11.attn.q_proj     
+      0.0           730066          4      182516.5      184136.0      116849      244945      69314.6  PushPop  :layer_compute/module.layers.13.ffn.w1          
+      0.0           729336          4      182334.0      177015.0      130909      244397      58158.1  PushPop  :layer_compute/module.layers.4.attn.q_proj      
+      0.0           728991          4      182247.8      180168.5      127045      241609      60905.7  PushPop  :layer_compute/module.layers.3.attn.q_proj      
+      0.0           728966          4      182241.5      180113.0      121910      246830      63170.9  PushPop  :layer_compute/module.layers.4.ffn.w1           
+      0.0           728255          4      182063.8      180957.0      120027      246314      67257.3  PushPop  :layer_compute/module.layers.2.ffn.w1           
+      0.0           727120          4      181780.0      164379.0      149659      248703      46196.0  PushPop  :layer_compute/module.layers.15.attn.v_proj     
+      0.0           726761          4      181690.3      170678.0      118308      267097      72163.5  PushPop  :layer_compute/module.layers.6.ffn.w1           
+      0.0           726679          4      181669.8      181572.0      120733      242802      61351.6  PushPop  :layer_compute/module.layers.8.attn.q_proj      
+      0.0           725069          4      181267.3      181645.5      126874      234904      56129.7  PushPop  :layer_compute/module.layers.10.attn.q_proj     
+      0.0           724985          4      181246.3      178317.5      146989      221361      34973.7  PushPop  :layer_compute/module.layers.17.attn.k_proj     
+      0.0           722707          4      180676.8      180560.5      123420      238166      55202.7  PushPop  :layer_compute/module.layers.7.attn.q_proj      
+      0.0           719425          4      179856.3      174234.0      131753      239204      55623.7  PushPop  :layer_compute/module.layers.9.attn.q_proj      
+      0.0           718696          4      179674.0      178130.5      120266      242169      65440.5  PushPop  :layer_compute/module.layers.12.ffn.w1          
+      0.0           718151          4      179537.8      171543.0      144080      230985      41297.2  PushPop  :layer_compute/module.layers.16.attn.k_proj     
+      0.0           716496          4      179124.0      176844.5      123346      239461      62752.3  PushPop  :layer_compute/module.layers.7.ffn.w1           
+      0.0           713240          4      178310.0      173847.5      122516      243029      63560.9  PushPop  :layer_compute/module.layers.5.ffn.w1           
+      0.0           713182          4      178295.5      175098.0      119169      243817      61165.5  PushPop  :layer_compute/module.layers.5.attn.q_proj      
+      0.0           712671          4      178167.8      175278.0      123573      238542      61626.1  PushPop  :layer_compute/module.layers.1.ffn.w2           
+      0.0           710940          4      177735.0      176451.5      117255      240782      64988.7  PushPop  :layer_compute/module.layers.10.ffn.w1          
+      0.0           709739          4      177434.8      174662.5      148083      212331      32193.5  PushPop  :layer_compute/module.layers.17.attn.v_proj     
+      0.0           706005          4      176501.3      164218.5      109383      268185      77010.1  PushPop  :layer_compute/module.layers.11.ffn.w2          
+      0.0           705867          4      176466.8      175031.0      121740      234065      58049.4  PushPop  :layer_compute/module.layers.8.ffn.w1           
+      0.0           705805          4      176451.3      175869.0      144306      209761      33218.3  PushPop  :layer_compute/module.layers.15.attn.k_proj     
+      0.0           702158          4      175539.5      165873.0      145887      224525      37098.7  PushPop  :layer_compute/module.layers.18.attn.k_proj     
+      0.0           701808          4      175452.0      171803.5      125042      233159      56063.5  PushPop  :layer_compute/module.layers.13.attn.q_proj     
+      0.0           695971          4      173992.8      168046.5      124159      235719      55506.5  PushPop  :layer_compute/module.layers.6.attn.q_proj      
+      0.0           693374          4      173343.5      176056.0      114157      227105      59616.9  PushPop  :layer_compute/module.layers.12.attn.q_proj     
+      0.0           688007          4      172001.8      168325.5      149791      201565      23090.7  PushPop  :layer_compute/module.layers.16.attn.v_proj     
+      0.0           680696          4      170174.0      166997.0      104270      242432      67971.3  PushPop  :layer_compute/module.layers.3.ffn.w3           
+      0.0           676673          4      169168.3      166576.0      115774      227747      57131.0  PushPop  :layer_compute/module.layers.8.ffn.w2           
+      0.0           674165          4      168541.3      167248.5      108881      230787      66338.9  PushPop  :layer_compute/module.layers.10.attn.k_proj     
+      0.0           674019          4      168504.8      170030.0      114522      219437      50849.4  PushPop  :layer_compute/module.layers.2.ffn.w3           
+      0.0           672898          4      168224.5      166278.0      112737      227605      60323.9  PushPop  :layer_compute/module.layers.8.attn.k_proj      
+      0.0           672594          4      168148.5      161267.0      138734      211326      34479.8  PushPop  :layer_compute/module.layers.18.attn.v_proj     
+      0.0           672016          4      168004.0      169122.0      112900      220872      58115.1  PushPop  :layer_compute/module.layers.8.ffn.w3           
+      0.0           671111          4      167777.8      164572.0      118482      223485      55356.4  PushPop  :layer_compute/module.layers.1.ffn.w3           
+      0.0           661597          4      165399.3      170906.5      107982      211802      53218.1  PushPop  :layer_compute/module.layers.12.ffn.w2          
+      0.0           657571          4      164392.8      164678.0      101265      226950      67721.4  PushPop  :layer_compute/module.layers.13.ffn.w3          
+      0.0           656358          4      164089.5      163546.0      112587      216679      52909.4  PushPop  :layer_compute/module.layers.2.ffn.w2           
+      0.0           654331          4      163582.8      156898.5      107413      233121      60205.5  PushPop  :layer_compute/module.layers.6.ffn.w2           
+      0.0           653667          4      163416.8      160595.5      100204      232272      67768.1  PushPop  :layer_compute/module.layers.9.ffn.w3           
+      0.0           652863          4      163215.8      162339.0      112005      216180      54799.3  PushPop  :layer_compute/module.layers.5.ffn.w2           
+      0.0           649333          4      162333.3      160425.0      108474      220009      59834.9  PushPop  :layer_compute/module.layers.12.ffn.w3          
+      0.0           647803          4      161950.8      156245.5      102436      232876      63919.8  PushPop  :layer_compute/module.layers.3.ffn.w2           
+      0.0           647057          4      161764.3      158817.5      103318      226104      63146.2  PushPop  :layer_compute/module.layers.9.ffn.w2           
+      0.0           645681          4      161420.3      158078.0      118810      210715      46601.1  PushPop  :layer_compute/module.layers.1.attn.k_proj      
+      0.0           645278          4      161319.5      161448.5      106843      215538      58762.2  PushPop  :layer_compute/module.layers.7.ffn.w2           
+      0.0           641641          4      160410.3      157600.0      110060      216381      56106.1  PushPop  :layer_compute/module.layers.5.ffn.w3           
+      0.0           637466          4      159366.5      158248.5      101623      219346      61339.1  PushPop  :layer_compute/module.layers.6.ffn.w3           
+      0.0           634722          4      158680.5      156006.0      111946      210764      49785.3  PushPop  :layer_compute/module.layers.4.attn.k_proj      
+      0.0           631824          4      157956.0      157534.5       96073      220682      66159.4  PushPop  :layer_compute/module.layers.11.attn.k_proj     
+      0.0           630545          4      157636.3      156418.5      104743      212965      57284.2  PushPop  :layer_compute/module.layers.7.ffn.w3           
+      0.0           630126          4      157531.5      157941.5      124833      189410      36397.7  PushPop  :layer_compute/module.lm_head                   
+      0.0           628994          4      157248.5      157384.0      106382      207844      57761.9  PushPop  :layer_compute/module.layers.13.attn.k_proj     
+      0.0           628227          4      157056.8      157975.5      100435      211841      60556.1  PushPop  :layer_compute/module.layers.10.ffn.w3          
+      0.0           628041          4      157010.3      154212.0      103912      215705      56724.0  PushPop  :layer_compute/module.layers.14.attn.k_proj     
+      0.0           625140          4      156285.0      158116.0      101633      207275      57249.0  PushPop  :layer_compute/module.layers.2.attn.k_proj      
+      0.0           624775          4      156193.8      156883.5      104411      206597      54531.8  PushPop  :layer_compute/module.layers.10.ffn.w2          
+      0.0           619773          4      154943.3      151189.5      105735      211659      56627.8  PushPop  :layer_compute/module.layers.3.attn.k_proj      
+      0.0           618413          4      154603.3      151159.0       99134      216961      60388.5  PushPop  :layer_compute/module.layers.5.attn.k_proj      
+      0.0           616324          4      154081.0      155192.5       94313      211626      59227.1  PushPop  :layer_compute/module.layers.12.attn.k_proj     
+      0.0           614774          4      153693.5      152542.5       99184      210505      55679.9  PushPop  :layer_compute/module.layers.7.attn.k_proj      
+      0.0           613932          4      153483.0      148296.5      100928      216411      54758.9  PushPop  :layer_compute/module.layers.1.attn.v_proj      
+      0.0           612061          4      153015.3      145923.0      106070      214145      52978.0  PushPop  :layer_compute/module.layers.9.attn.k_proj      
+      0.0           610643          4      152660.8      148877.0      102675      210214      53987.3  PushPop  :layer_compute/module.layers.6.attn.k_proj      
+      0.0           609385          4      152346.3      152424.0      105511      199026      50168.6  PushPop  :layer_compute/module.layers.4.attn.v_proj      
+      0.0           606868          4      151717.0      153023.0       95093      205729      61928.7  PushPop  :layer_compute/module.layers.8.attn.v_proj      
+      0.0           599449          4      149862.3      145242.0       98198      210767      57963.0  PushPop  :layer_compute/module.layers.10.attn.v_proj     
+      0.0           590537          4      147634.3      148756.0      100463      192562      49102.5  PushPop  :layer_compute/module.layers.2.attn.v_proj      
+      0.0           585861          4      146465.3      146660.5       94430      198110      54861.8  PushPop  :layer_compute/module.layers.13.attn.v_proj     
+      0.0           585481          4      146370.3      145345.0       90290      204501      58291.1  PushPop  :layer_compute/module.layers.7.attn.v_proj      
+      0.0           585471          4      146367.8      140635.0       90444      213757      59153.1  PushPop  :layer_compute/module.layers.9.attn.v_proj      
+      0.0           585373          4      146343.3      148588.5       97335      190861      49421.4  PushPop  :layer_compute/module.layers.5.attn.v_proj      
+      0.0           580223          4      145055.8      144134.0       95408      196547      54026.2  PushPop  :layer_compute/module.layers.11.attn.v_proj     
+      0.0           578886          4      144721.5      142624.0       97569      196069      50957.8  PushPop  :layer_compute/module.layers.14.attn.v_proj     
+      0.0           578180          4      144545.0      143819.0       92480      198062      58227.8  PushPop  :layer_compute/module.layers.3.attn.v_proj      
+      0.0           572790          4      143197.5      143443.0       89275      196629      56140.8  PushPop  :layer_compute/module.layers.12.attn.v_proj     
+      0.0           567358          4      141839.5      144373.0       90216      188396      52221.1  PushPop  :layer_compute/module.layers.6.attn.v_proj      
+      0.0           279190          2      139595.0      139595.0      139545      139645         70.7  PushPop  NCCL:ncclCommFinalize                           
+
+Processing [/root/autodl-tmp/cs336-results/fsdp_xl_nsys.sqlite] with [/opt/nvidia/nsight-compute/2025.3.1/host/target-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)   Med (ns)   Min (ns)  Max (ns)  StdDev (ns)                                                  Name                                                
+ --------  ---------------  ---------  ---------  ---------  --------  --------  -----------  ----------------------------------------------------------------------------------------------------
+     32.0       2276150461        904  2517865.6  1424452.0   1036939   9160920    1586237.8  ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<(unsigned long)4096>)          
+     30.8       2186845768       1816  1204210.2   536612.5      5056   4017705     781359.8  ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<(unsigned long)4096>)                      
+     15.4       1095407997        582  1882144.3  1064153.5      5024   7640152    1706361.0  ncclDevKernel_Broadcast_RING_LL(ncclDevKernelArgsStorage<(unsigned long)4096>)                      
+      2.7        192275781       7504    25623.1    15072.0       991     85502      28369.7  void at::native::vectorized_elementwise_kernel<(int)4, at::native::AUnaryFunctor<float, float, floa…
+      2.1        150018781       1924    77972.3    24287.0      5248    299962      99612.6  void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::n…
+      2.1        149278881        900   165865.4   107134.0     76190    296826      87590.5  void cutlass::Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_128x64_64x3_nn_align8>(T1::Para…
+      2.0        139488769       5428    25698.0     7168.0      1055     93918      32530.6  void at::native::vectorized_elementwise_kernel<(int)4, at::native::CUDAFunctor_add<float>, std::arr…
+      2.0        139173520        900   154637.2    80510.5     73215    268859      88887.4  void cutlass::Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_128x64_64x3_tn_align8>(T1::Para…
+      1.2         84737819        516   164220.6   209548.0     21120    214140      81051.7  void cutlass::Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_256x128_32x3_nt_align8>(T1::Par…
+      1.1         74963784       3864    19400.6    13216.0      1951     67870      21661.1  void at::native::vectorized_elementwise_kernel<(int)4, at::native::bfloat16_copy_kernel_cuda(at::Te…
+      1.0         70264356       1940    36218.7    14463.0      6656    127230      40652.7  void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIterator…
+      1.0         67951767       3688    18425.1     8992.0       800     79134      20796.1  void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<float>, std::array<c…
+      0.8         55673777        512   108737.8   118174.0     56159    137117      27250.2  void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::n…
+      0.6         42226049       1164    36276.7    20352.0      1600     85150      31322.3  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BUnaryFunctor<float, float, floa…
+      0.5         38218929       1164    32834.1     7200.0      1632     93598      38687.6  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<float, float, floa…
+      0.5         37587196       1296    29002.5    10160.0       992    126269      41307.5  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<float, float, floa…
+      0.5         36408233       1424    25567.6     5344.0      1024     88126      34668.5  void at::native::vectorized_elementwise_kernel<(int)4, void at::native::<unnamed>::pow_tensor_scala…
+      0.5         34498555       1164    29637.9     5536.0      1216     84382      35917.5  void at::native::vectorized_elementwise_kernel<(int)4, at::native::sqrt_kernel_cuda(at::TensorItera…
+      0.4         30219130        512    59021.7    58974.5     57599     64063        728.4  void cutlass::Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_128x128_32x4_nt_align8>(T1::Par…
+      0.4         27400097        768    35677.2    35279.0      9984     57663      14612.7  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<c10::BFloat16, c10…
+      0.3         19979055       2064     9679.8     9600.0      4160     24287       3565.6  void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::n…
+      0.3         17795518       1424    12496.9     5376.0       992     40192      14800.6  void at::native::vectorized_elementwise_kernel<(int)4, at::native::CUDAFunctorOnSelf_add<float>, st…
+      0.2         13482043        516    26128.0    15375.5      5600     72287      25905.5  void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<float, at::native::func_wrapp…
+      0.2         13344765       1664     8019.7     8960.0      2016     26976       4594.1  void at::native::vectorized_elementwise_kernel<(int)4, at::native::CUDAFunctor_add<c10::BFloat16>, …
+      0.2         11295786       1024    11031.0     7424.0      6176     27039       5391.3  void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl<at::native::…
+      0.2         10990717        128    85865.0    85662.0     82942     89950       1301.9  void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::n…
+      0.2         10980185        128    85782.7    85854.0     82654     89854       1409.0  void at::native::vectorized_elementwise_kernel<(int)4, at::native::neg_kernel_cuda(at::TensorIterat…
+      0.1         10088616        256    39408.7    37183.5     30303     65919       8353.7  void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::n…
+      0.1          8452498        256    33017.6    31999.5     28064     40703       3834.2  void cutlass::Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_256x128_32x3_tn_align8>(T1::Par…
+      0.1          6311838        128    49311.2    49359.0     43519     55743       2283.3  void at::native::vectorized_elementwise_kernel<(int)4, at::native::exp_kernel_cuda(at::TensorIterat…
+      0.1          5903068        256    23058.9    21487.5     19232     33919       3501.3  void cutlass::Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_128x256_32x3_nn_align8>(T1::Par…
+      0.1          4449654        260    17114.1    12687.5      9632     71903      10693.4  ncclDevKernel_AllReduce_Sum_f32_RING_LL(ncclDevKernelArgsStorage<(unsigned long)4096>)              
+      0.1          4342001        128    33921.9    33263.0     31968     36863       1323.4  void cutlass::Kernel2<cutlass_80_tensorop_bf16_s16816gemm_relu_bf16_128x256_32x3_nt_align8>(T1::Par…
+      0.1          4138448        128    32331.6    28656.0     27647     45631       5456.3  void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::n…
+      0.0          3415364        256    13341.3    13103.5     12288     15040        912.9  void at::native::<unnamed>::CatArrayBatchedCopy<at::native::<unnamed>::OpaqueType<(unsigned int)4>,…
+      0.0          3398785        256    13276.5    13248.0     12480     15936        490.8  void at::native::vectorized_elementwise_kernel<(int)4, at::native::BUnaryFunctor<c10::BFloat16, c10…
+      0.0          3109263        260    11958.7    11551.5      6783     18528       1815.8  void at::native::reduce_kernel<(int)128, (int)4, at::native::ReduceOp<float, at::native::func_wrapp…
+      0.0          2885939        264    10931.6    11360.0      6783     23680       3423.5  void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::n…
+      0.0          2620135        128    20469.8    20447.0     19904     21599        251.6  void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<c10::BFloat16, at::native::Ma…
+      0.0          2491727        128    19466.6    19503.5     13983     23744       1416.1  void at::native::vectorized_elementwise_kernel<(int)4, at::native::neg_kernel_cuda(at::TensorIterat…
+      0.0          2272627        388     5857.3     3040.0       896     19871       4656.5  void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<c10::BFloat16>, std:…
+      0.0          1884413        128    14722.0    14544.0     14144     18112        556.7  void at::native::<unnamed>::CatArrayBatchedCopy<at::native::<unnamed>::OpaqueType<(unsigned int)2>,…
+      0.0          1856246        264     7031.2     6896.0      5631     12096        888.8  void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<float, at::native::MeanOps<fl…
+      0.0          1851875        128    14467.8    13888.0     11072     47775       4439.5  void at::native::vectorized_elementwise_kernel<(int)4, at::native::sigmoid_backward_kernel_cuda(at:…
+      0.0          1718116        256     6711.4     5216.0      4032     13472       3158.8  void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::n…
+      0.0          1650710        128    12896.2    12400.0      9280     17760       3342.9  void at::native::vectorized_elementwise_kernel<(int)4, at::native::sigmoid_kernel_cuda(at::TensorIt…
+      0.0          1641846        128    12826.9    12767.0      9759     14367        560.3  void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<c10::BFloat16, at::native::fu…
+      0.0           996844        128     7787.8     7775.0      7328      8640        193.5  void at::native::_scatter_gather_elementwise_kernel<(int)128, (int)8, void at::native::_cuda_scatte…
+      0.0           376919        260     1449.7     1296.0       960      5247        813.2  void at::native::vectorized_elementwise_kernel<(int)4, void at::native::<unnamed>::pow_tensor_scala…
+      0.0           373913        128     2921.2     2912.0      2816      3296         61.2  void at::native::<unnamed>::CatArrayBatchedCopy_vectorized<at::native::<unnamed>::OpaqueType<(unsig…
+      0.0           364630        260     1402.4     1440.0       992      4768        497.8  void at::native::vectorized_elementwise_kernel<(int)4, at::native::rsqrt_kernel_cuda(at::TensorIter…
+      0.0           345816        128     2701.7     2688.0      2592      3008         60.2  void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::n…
+      0.0           114716        132      869.1      832.0       800      1152         79.0  void <unnamed>::elementwise_kernel_with_index<int, at::native::arange_cuda_out(const c10::Scalar &,…
+      0.0            52926          4    13231.5    12927.5     12448     14623        997.2  void <unnamed>::indexing_backward_kernel<c10::BFloat16, (int)4>(const long *, const long *, const T…
+      0.0            24512          4     6128.0     6064.0      6016      6368        162.1  void at_cuda_detail::cub::detail::radix_sort::DeviceRadixSortSingleTileKernel<at_cuda_detail::cub::…
+      0.0            16448          4     4112.0     4144.0      3744      4416        300.8  void at::native::vectorized_gather_kernel<(int)16, long>(char *, char *, T2 *, int, long, long, lon…
+      0.0            11232          4     2808.0     2752.0      2112      3616        808.9  void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<long, long, long, …
+      0.0             7520          4     1880.0     1840.0      1792      2048        115.0  void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<long, long, long, …
+      0.0             5984          4     1496.0     1472.0      1120      1920        419.2  void at::native::vectorized_elementwise_kernel<(int)2, at::native::AUnaryFunctor<long, long, long, …
+      0.0             4896          4     1224.0     1216.0      1216      1248         16.0  void at::native::unrolled_elementwise_kernel<at::native::<unnamed>::CompareFunctor<long>, std::arra…
+      0.0             3680          4      920.0      928.0       896       928         16.0  void at::native::vectorized_elementwise_kernel<(int)2, at::native::FillFunctor<long>, std::array<ch…
+      0.0             2496          2     1248.0     1248.0      1248      1248          0.0  void at::native::<unnamed>::distribution_elementwise_grid_stride_kernel<unsigned int, (int)4, void …
+

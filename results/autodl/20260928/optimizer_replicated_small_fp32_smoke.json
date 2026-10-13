@@ -1,0 +1,100 @@
+{
+  "implementation": "replicated_adamw",
+  "optimizer_class": "AdamW",
+  "ddp_implementation": "overlapping_ddp",
+  "device_type": "cuda",
+  "backend": "nccl",
+  "precision": "fp32",
+  "torch_version": "2.11.0+cu130",
+  "world_size": 2,
+  "cpu_threads_per_rank": 1,
+  "model_size": "small",
+  "model_config": {
+    "d_model": 768,
+    "d_ff": 3072,
+    "num_layers": 12,
+    "num_heads": 12
+  },
+  "parameter_count": 128625408,
+  "global_batch_size": 4,
+  "local_batch_size": 2,
+  "context_length": 128,
+  "vocab_size": 10000,
+  "warmup_steps_after_first_step": 1,
+  "measurement_steps": 2,
+  "step_includes_zero_grad": true,
+  "seed": 0,
+  "per_rank": [
+    {
+      "rank": 0,
+      "device": "cuda:0",
+      "parameter_bytes": 514501632,
+      "gradient_bytes_after_first_backward": 514501632,
+      "optimizer_state_bytes_before_first_step": 0,
+      "optimizer_state_bytes_after_first_step": 1029003264,
+      "optimizer_state_entry_count": 111,
+      "after_model_initialization": {
+        "allocated_bytes": 516008960,
+        "reserved_bytes": 568328192,
+        "peak_allocated_bytes": 516008960,
+        "peak_reserved_bytes": 568328192
+      },
+      "before_first_optimizer_step": {
+        "allocated_bytes": 1067280896,
+        "reserved_bytes": 1317011456,
+        "peak_allocated_bytes": 1068076544,
+        "peak_reserved_bytes": 1317011456
+      },
+      "after_first_optimizer_step": {
+        "allocated_bytes": 2103165440,
+        "reserved_bytes": 2638217216,
+        "peak_allocated_bytes": 2260451840,
+        "peak_reserved_bytes": 2638217216
+      },
+      "mean_step_ms": 56.92191098933108,
+      "std_step_ms": 0.27967343930522837,
+      "measurement_peak": {
+        "allocated_bytes": 2103936000,
+        "reserved_bytes": 2638217216,
+        "peak_allocated_bytes": 2271462912,
+        "peak_reserved_bytes": 2638217216
+      }
+    },
+    {
+      "rank": 1,
+      "device": "cuda:1",
+      "parameter_bytes": 514501632,
+      "gradient_bytes_after_first_backward": 514501632,
+      "optimizer_state_bytes_before_first_step": 0,
+      "optimizer_state_bytes_after_first_step": 1029003264,
+      "optimizer_state_entry_count": 111,
+      "after_model_initialization": {
+        "allocated_bytes": 516008960,
+        "reserved_bytes": 568328192,
+        "peak_allocated_bytes": 516008960,
+        "peak_reserved_bytes": 568328192
+      },
+      "before_first_optimizer_step": {
+        "allocated_bytes": 1067280896,
+        "reserved_bytes": 1317011456,
+        "peak_allocated_bytes": 1068076544,
+        "peak_reserved_bytes": 1317011456
+      },
+      "after_first_optimizer_step": {
+        "allocated_bytes": 2103165440,
+        "reserved_bytes": 2638217216,
+        "peak_allocated_bytes": 2260451840,
+        "peak_reserved_bytes": 2638217216
+      },
+      "mean_step_ms": 56.90396702266298,
+      "std_step_ms": 0.27322604161788705,
+      "measurement_peak": {
+        "allocated_bytes": 2103936000,
+        "reserved_bytes": 2638217216,
+        "peak_allocated_bytes": 2271462912,
+        "peak_reserved_bytes": 2638217216
+      }
+    }
+  ],
+  "max_rank_mean_step_ms": 56.92191098933108
+}
