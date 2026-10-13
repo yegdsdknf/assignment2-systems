@@ -1,0 +1,32 @@
+{
+  "implementation": "overlapping_ddp",
+  "implementation_class": "OverlappingDDP",
+  "device": "cpu",
+  "backend": "gloo",
+  "dtype": "float32",
+  "torch_version": "2.11.0+cu130",
+  "world_size": 2,
+  "cpu_threads_per_rank": 1,
+  "global_batch_size": 32,
+  "local_batch_size": 16,
+  "warmup_steps": 5,
+  "measured_steps": 20,
+  "step_includes_zero_grad": false,
+  "gradient_tensor_count": 6,
+  "gradient_bytes_per_rank": 428160,
+  "per_rank": [
+    {
+      "rank": 0,
+      "mean_step_ms": 2.7998700503303553,
+      "mean_sync_ms": 2.2115899997515953,
+      "sync_fraction": 0.7898902306164712
+    },
+    {
+      "rank": 1,
+      "mean_step_ms": 2.799710050021531,
+      "mean_sync_ms": 2.2302800503894105,
+      "sync_fraction": 0.7966110813411762
+    }
+  ],
+  "max_rank_mean_step_ms": 2.7998700503303553
+}
